@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuizMaster</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<aside class="qm-sidebar">
+
+<div class="qm-brand">
+<small>Academic Quiz Studio</small>
+<strong>Quiz<span>Master</span></strong>
+</div>
+
+<div class="qm-nav">
+
+<div class="qm-nav-label">Overview</div>
+
+<button onclick="qmGo('homeScreen',this)" class="active">
+<span class="nav-icon">⌂</span>Dashboard
+</button>
+
+<div class="qm-nav-label">Learn</div>
+
+<button onclick="showScreen('studentScreen');qmActive(this)">
+<span class="nav-icon">✦</span>Take a Quiz
+</button>
+
+<button onclick="qmGoAI(this)">
+<span class="nav-icon">✧</span>AI Quiz
+</button>
+
+<div class="qm-nav-label">Create</div>
+
+<button onclick="showScreen('teacherScreen');qmActive(this)">
+<span class="nav-icon">◇</span>Teacher Mode
+</button>
+
+<div class="qm-nav-label">Progress</div>
+
+<button onclick="showLeaderboard();qmActive(this)">
+<span class="nav-icon">♕</span>Leaderboard
+</button>
+
+<button onclick="showAnalytics();qmActive(this)">
+<span class="nav-icon">◌</span>Analytics
+</button>
+
+<button onclick="qmGoBadges(this)">
+<span class="nav-icon">✥</span>Badges
+</button>
+<button onclick="toggleDarkMode()" id="darkModeBtn">
+<span class="nav-icon">◐</span>Dark Mode
+</button>
+</div>
+
+<div class="qm-side-footer">
+Learn something new.<br>
+Master something better.
+</div>
+
+</aside>
+
+<div id="dashboardMain">
+
+<div class="qm-topline"></div>
+
+<!-- HOME -->
+
+<div id="homeScreen" class="screen active">
+
+<div class="qm-welcome">
+
+<div class="qm-welcome-copy">
+
+<div class="qm-date">
+QUIZMASTER • YOUR LEARNING SPACE
+</div>
+
+<h1>🎓 QuizMaster</h1>
+
+<p class="subtitle">
+Learn • Practice • Compete • Improve
+</p>
+
+<div class="qm-greeting">
+Welcome back — ready for your next challenge?
+</div>
+
+</div>
+
+</div>
+
+<div class="card center">
+
+<div class="level-title" id="homeLevel">
+Level 1
+</div>
+
+<div class="rank-title" id="homeRank">
+🌱 Quiz Beginner
+</div>
+
+<div class="xp-box">
+
+<strong>
+<span id="homeXP">0</span> XP
+</strong>
+
+<p class="small">
+<span id="nextXP">100</span> XP needed for next level
+</p>
+
+<div class="level-progress">
+<div class="level-bar" id="homeLevelBar"></div>
+</div>
+
+</div>
+
+</div>
+
+<div class="stats">
+
+<div class="stat">
+<strong id="homeQuestions">0</strong>
+Questions
+</div>
+
+<div class="stat">
+<strong id="homeBest">0%</strong>
+Best Score
+</div>
+
+<div class="stat">
+<strong id="homeStreak">0</strong>
+🔥 Streak
+</div>
+
+</div>
+
+<div class="menu" style="display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:24px 0;">
+
+<button onclick="showScreen('studentScreen')">
+👨‍🎓<br>Student Mode
+</button>
+
+<button onclick="showScreen('teacherScreen')">
+👩‍🏫<br>Teacher Mode
+</button>
+
+<button onclick="showLeaderboard()">
+🏆<br>Leaderboard
+</button>
+
+<button onclick="showAnalytics()">
+📊<br>My Analytics
+</button>
+
+</div>
+
+<div class="card">
+
+<h3>🏅 Your Badges</h3>
+
+<div id="homeBadges">
+No badges yet. Start a quiz!
+</div>
+
+</div>
+
+<div class="qm-section-title">
+
+<h2>Choose your subject</h2>
+
+<span>SELECT A SUBJECT TO BEGIN</span>
+
+</div>
+
+<div class="qm-subjects" id="homeSubjects"></div>
+
+</div>
+
+<!-- STUDENT -->
+
+<div id="studentScreen" class="screen">
+
+<h1>👨‍🎓 Student Mode</h1>
+
+<p class="subtitle">
+Choose your challenge
+</p>
+
+<div class="card">
+
+<label>Your Name</label>
+
+<input
+id="studentName"
+placeholder="Enter your name"
+
+>
+
+<label>Choose Subject</label>
+
+<select id="subjectSelect"></select>
+
+<label>Difficulty Level</label>
+
+<select id="difficultySelect">
+
+<option value="easy">
+Easy — Foundations
+</option>
+
+<option value="medium" selected>
+Medium — Practice
+</option>
+
+<option value="hard">
+Hard — Challenge
+</option>
+
+</select>
+
+<p class="small">
+If a subject does not have enough questions at the selected difficulty,
+QuizMaster will use the available questions for that subject.
+</p>
+
+<label>Number of Questions</label>
+
+<select id="questionCount">
+
+<option value="5">5 Questions</option>
+<option value="10">10 Questions</option>
+<option value="15">15 Questions</option>
+<option value="20">20 Questions</option>
+
+</select>
+
+<label>Time Limit</label>
+
+<select id="timeLimit">
+
+<option value="60">1 Minute</option>
+<option value="120">2 Minutes</option>
+<option value="300">5 Minutes</option>
+<option value="600">10 Minutes</option>
+
+</select>
+
+<div class="center">
+
+<button onclick="startQuiz()">
+🚀 Start Quiz
+</button>
+
+<button class="gray"
+onclick="showScreen('homeScreen')">
+← Back </button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- QUIZ -->
+
+<div id="quizScreen" class="screen">
+
+<h1 id="quizTitle">
+Quiz
+</h1>
+
+<div class="timer">
+
+⏱️ Time: <span id="timer">
+00:00 </span>
+
+</div>
+
+<div class="progress">
+
+<div
+class="progress-bar"
+id="progressBar">
+</div>
+
+</div>
+
+<p class="center">
+
+Question <span id="currentNumber">1</span>
+of <span id="totalQuestions">5</span>
+
+</p>
+
+<div
+class="question"
+id="questionText">
+</div>
+
+<div id="options"></div>
+
+<div class="center">
+
+<button
+onclick="nextQuestion()"
+id="nextButton">
+Next ➡️ </button>
+
+</div>
+
+</div>
+
+<!-- RESULT -->
+
+<div id="resultScreen" class="screen">
+
+<h1>🎉 Quiz Complete!</h1>
+
+<div
+class="result-score"
+id="resultScore">
+0%
+</div>
+
+<div class="card center">
+
+<h3 id="resultMessage">
+Well done!
+</h3>
+
+<p id="resultDetails"></p>
+
+</div>
+
+<div class="stats">
+
+<div class="stat">
+
+<strong id="correctResult">
+0
+</strong>
+
+Correct
+
+</div>
+
+<div class="stat">
+
+<strong id="wrongResult">
+0
+</strong>
+
+Wrong
+
+</div>
+
+<div class="stat">
+
+<strong id="xpResult">
+0
+</strong>
+
+XP Earned
+
+</div>
+
+</div>
+
+<div class="card center">
+
+<h3>⭐ Your Progress</h3>
+
+<div
+class="level-title"
+id="resultLevel">
+Level 1
+</div>
+
+<div
+class="rank-title"
+id="resultRank">
+🌱 Quiz Beginner
+</div>
+
+<p>
+Total XP:
+<strong id="resultTotalXP">
+0
+</strong>
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>🏅 Badges Earned</h3>
+
+<div id="resultBadges"></div>
+
+</div>
+
+<div class="center">
+
+<button onclick="showScreen('studentScreen')">
+🔄 Play Again
+</button>
+
+<button onclick="showScreen('homeScreen')">
+🏠 Home
+</button>
+
+</div>
+
+</div>
+
+<!-- TEACHER -->
+
+<div id="teacherScreen" class="screen">
+
+<h1>👩‍🏫 Teacher Mode</h1>
+
+<p class="subtitle">
+Create and manage your own questions
+</p>
+
+<div class="card">
+
+<h3>➕ Add Question</h3>
+
+<label>Subject</label>
+
+<input
+id="teacherSubject"
+placeholder="Example: Computer Science"
+
+>
+
+<label>Difficulty</label>
+
+<select id="teacherDifficulty">
+
+<option value="easy">Easy</option>
+<option value="medium" selected>Medium</option>
+<option value="hard">Hard</option>
+
+</select>
+
+<label>Question</label>
+
+<textarea
+id="questionInput"
+placeholder="Write your question here">
+</textarea>
+
+<label>Option A</label> <input id="optionA">
+
+<label>Option B</label> <input id="optionB">
+
+<label>Option C</label> <input id="optionC">
+
+<label>Option D</label> <input id="optionD">
+
+<label>Correct Answer</label>
+
+<select id="correctInput">
+
+<option value="0">A</option>
+<option value="1">B</option>
+<option value="2">C</option>
+<option value="3">D</option>
+
+</select>
+
+<button
+class="green"
+onclick="saveQuestion()">
+💾 Save Question </button>
+
+</div>
+
+<div class="card">
+
+<h3>📚 Your Questions</h3>
+
+<div id="teacherQuestions"></div>
+
+</div>
+
+<div class="card">
+
+<h3>🤖 Study Material → Question Helper</h3>
+
+<p class="small">
+Paste your notes below and QuizMaster will create simple practice questions.
+</p>
+
+<textarea
+id="materialInput"
+placeholder="Paste your study material here...">
+</textarea>
+
+<button
+class="orange"
+onclick="generateQuestions()">
+🤖 Generate Practice Questions </button>
+
+</div>
+
+<div class="center">
+
+<button
+class="gray"
+onclick="showScreen('homeScreen')">
+← Back </button>
+
+</div>
+
+</div>
+
+<!-- LEADERBOARD -->
+
+<div id="leaderboardScreen" class="screen">
+
+<h1>🏆 Leaderboard</h1>
+
+<p class="subtitle">
+Compete for the top spot!
+</p>
+
+<div class="card">
+
+<div id="leaderboard"></div>
+
+</div>
+
+<div class="center">
+
+<button
+class="gray"
+onclick="showScreen('homeScreen')">
+← Back </button>
+
+</div>
+
+</div>
+
+<!-- ANALYTICS -->
+
+<div id="analyticsScreen" class="screen">
+
+<h1>📊 My Analytics</h1>
+
+<div class="card center">
+
+<div
+class="level-title"
+id="analyticsLevel">
+Level 1
+</div>
+
+<div
+class="rank-title"
+id="analyticsRank">
+🌱 Quiz Beginner
+</div>
+
+<div class="xp-box">
+
+<strong>
+<span id="analyticsXP">0</span> XP
+</strong>
+
+<div class="level-progress">
+
+<div
+class="level-bar"
+id="analyticsLevelBar">
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="stats">
+
+<div class="stat">
+<strong id="analyticsQuizzes">0</strong>
+Quizzes
+</div>
+
+<div class="stat">
+<strong id="analyticsAverage">0%</strong>
+Average
+</div>
+
+<div class="stat">
+<strong id="analyticsBest">0%</strong>
+Best
+</div>
+
+<div class="stat">
+<strong id="analyticsStreak">0</strong>
+🔥 Streak
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>🏅 Badges</h3>
+
+<div id="analyticsBadges"></div>
+
+</div>
+
+<div class="center">
+
+<button
+class="gray"
+onclick="showScreen('homeScreen')">
+← Back </button>
+
+</div>
+
+</div>
+
+<!-- AI QUIZ -->
+
+<div id="aiQuizSection">
+
+<h2>🤖 AI Quiz Generator</h2>
+
+<p>
+Paste your study material or upload a PDF/text file.
+QuizMaster will generate questions based on your selected difficulty.
+</p>
+
+<input
+id="aiSubject"
+type="text"
+placeholder="Enter subject"
+
+>
+
+<label>
+Difficulty Level
+</label>
+
+<select id="aiDifficulty">
+
+<option value="easy">
+Easy — Foundations
+</option>
+
+<option value="medium" selected>
+Medium — Practice
+</option>
+
+<option value="hard">
+Hard — Challenge
+</option>
+
+</select>
+
+<textarea
+id="aiMaterial"
+placeholder="Paste your notes or study material here...">
+</textarea>
+
+<input
+id="aiFile"
+type="file"
+accept=".pdf,.txt"
+
+>
+
+<div
+id="fileStatus"
+class="small">
+</div>
+
+<button onclick="generateAIQuiz()">
+🧠 Generate AI Quiz
+</button>
+
+<div
+id="aiStatus"
+style="margin-top:15px;font-weight:bold;">
+</div>
+
+<div id="aiQuiz"></div>
+
+</div>
+<script src="app.js" defer></script>
+<!-- BADGES -->
+
+<div id="badgesBox">
+
+<h2 class="center">
+🏆 My QuizMaster Badges
+</h2>
+
+<div
+id="badgesList"
+style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:15px;">
+</div>
+
+</div>
+
+</div>
+</div>
+<script src="app.js" defer></script>
+</body>
+</html>
